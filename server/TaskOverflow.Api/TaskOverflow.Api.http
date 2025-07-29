@@ -1,0 +1,6 @@
+@TaskOverflow.Api_HostAddress = http://localhost:5103
+
+GET {{TaskOverflow.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
