@@ -4,14 +4,22 @@ import { useCreateTask } from "@/hooks/tasks";
 import { Input } from "@/components/ui/input";
 import { useCallback, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { Loader2 } from "lucide-react";
 
 export function TaskComposer() {
-  const { mutate: createTask } = useCreateTask();
+  const { mutate: createTask, isPending } = useCreateTask();
 
   const [title, setTitle] = useState<string>();
+  const [isValid, setIsValid] = useState<boolean>();
 
   const onChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
+    setIsValid(e.target.validity.valid);
+  }, []);
+
+  const onFocus = useCallback((e: React.FocusEvent<HTMLInputElement>) => {
+    setIsValid(e.target.validity.valid);
   }, []);
 
   const onClick = useCallback(() => {
@@ -26,9 +34,21 @@ export function TaskComposer() {
       <Input
         value={title}
         onChange={onChange}
-        className="flex-grow-1 bg-background"
+        onFocus={onFocus}
+        className={cn(
+          "flex-grow-1",
+          "bg-background",
+          isValid === false && "border-destructive",
+          isValid === true && "border-primary"
+        )}
+        minLength={1}
+        maxLength={100}
+        required
       />
-      <Button onClick={onClick}>Create</Button>
+      <Button onClick={onClick} disabled={!isValid || isPending}>
+        {isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
+        Create
+      </Button>
     </div>
   );
 }

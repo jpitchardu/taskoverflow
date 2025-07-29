@@ -31,8 +31,14 @@ export function TaskListDetail({
     <div className="flex flex-row gap-2 p-4 border-b border-gray-200 w-full items-center justify-between">
       <h2 className={cn("text-lg", isCompleted && "line-through")}>{title}</h2>
       <div className="flex flex-row gap-2">
-        <Button onClick={handleDeleteTask}>Delete</Button>
-        <Button onClick={handleCompleteTask}>Complete</Button>
+        <Button variant="destructive" onClick={handleDeleteTask}>
+          ☠️
+        </Button>
+        {!isCompleted && (
+          <Button variant="secondary" onClick={handleCompleteTask}>
+            ✔️
+          </Button>
+        )}
       </div>
     </div>
   );
