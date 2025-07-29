@@ -5,6 +5,7 @@ const API_URL = "http://192.168.1.92:5000";
 type Task = {
   id: string;
   title: string;
+  isCompleted: boolean;
   createdAt: string;
   updatedAt: string;
 };
@@ -13,9 +14,9 @@ export interface CreateTaskPayload {
   title: string;
 }
 
-export interface UpdateTaskPayload {
+export interface CompleteTaskPayload {
   id: string;
-  title: string;
+  isCompleted: boolean;
 }
 
 export function useTasks() {
@@ -66,14 +67,14 @@ export function useCreateTask() {
   });
 }
 
-export function useUpdateTask() {
+export function useCompleteTask() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (task: UpdateTaskPayload) => {
+    mutationFn: async (task: CompleteTaskPayload) => {
       const response = await fetch(`${API_URL}/task/${task.id}`, {
         method: "PATCH",
-        body: JSON.stringify(task),
+        body: JSON.stringify({ isCompleted: true }),
         headers: {
           "Content-Type": "application/json",
         },
