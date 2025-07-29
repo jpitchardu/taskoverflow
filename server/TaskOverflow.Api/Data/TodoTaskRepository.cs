@@ -53,6 +53,7 @@ public class TodoTaskRepository(TaskOverflowDbContext context) : ITodoTaskReposi
     var existingTask = await context.Tasks.FindAsync(id) ?? throw new NotFoundException();
 
     existingTask.Title = task.Title;
+    existingTask.IsCompleted = task.IsCompleted;
 
     await context.SaveChangesAsync(cancellationToken);
 

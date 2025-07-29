@@ -1,6 +1,6 @@
 # Docker commands
 start:
-	docker-compose up -d
+	docker-compose up --build
 
 stop:
 	docker-compose down
@@ -10,10 +10,10 @@ logs:
 
 rebuild:
 	docker-compose build api
-	docker-compose up -d api
+	docker-compose up --build api
 
 reset:
-	docker-compose down -v && docker-compose up -d
+	docker-compose down -v && docker-compose up --build
 
 # Build and Test commands
 restore-server:
@@ -27,8 +27,6 @@ clean:
 	@find . -name "bin" -type d -exec rm -rf {} + 2>/dev/null || true
 	@find . -name "obj" -type d -exec rm -rf {} + 2>/dev/null || true
 
-
-
 build-server:
 	cd server
 	@echo "🔨 Building solution..."
@@ -36,6 +34,7 @@ build-server:
 
 test-server:
 	cd server
+	export ASPNETCORE_ENVIRONMENT=Testing
 	@echo "🧪 Running tests..."
 	@dotnet test --configuration Release --verbosity minimal
 	@echo "✅ All tests passed!"

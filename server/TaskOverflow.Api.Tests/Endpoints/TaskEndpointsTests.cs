@@ -134,7 +134,7 @@ public class TaskEndpointsTests : IClassFixture<WebApplicationFactory<Program>>
     Console.WriteLine($"Created task: {createResult.Task.Id}");
 
     // Now update it
-    var updateRequest = new UpdateTaskRequest("Task 2");
+    var updateRequest = new UpdateTaskRequest(true);
     var updateJson = JsonSerializer.Serialize(updateRequest, _jsonOptions);
     Console.WriteLine($"Update JSON: {updateJson}");
 
@@ -156,7 +156,7 @@ public class TaskEndpointsTests : IClassFixture<WebApplicationFactory<Program>>
     var updateResult = JsonSerializer.Deserialize<UpdateTaskResponse>(updateResponseContent, _jsonOptions);
 
     updateResult.Should().NotBeNull();
-    updateResult.Task.Title.Should().Be(updateRequest.Title);
+    updateResult.Task.IsCompleted.Should().Be(updateRequest.IsCompleted);
   }
 
   [Fact]

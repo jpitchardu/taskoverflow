@@ -90,7 +90,7 @@ public class TodoTaskRepositoryTests : IDisposable
     _context.Tasks.Add(taskToCreate);
     await _context.SaveChangesAsync();
 
-    var updatedTask = new TodoTask("Updated Task");
+    var updatedTask = new TodoTask("Updated Task") { IsCompleted = true };
 
     await _repository.UpdateTask(taskToCreate.Id, updatedTask);
 
@@ -98,6 +98,7 @@ public class TodoTaskRepositoryTests : IDisposable
 
     createdTask.Should().NotBeNull();
     createdTask.Title.Should().Be(updatedTask.Title);
+    createdTask.IsCompleted.Should().Be(updatedTask.IsCompleted);
   }
 
   [Fact]

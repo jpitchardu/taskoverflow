@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TaskOverflow.Api.Data;
@@ -11,9 +12,11 @@ using TaskOverflow.Api.Data;
 namespace TaskOverflow.Api.Migrations
 {
     [DbContext(typeof(TaskOverflowDbContext))]
-    partial class TaskOverflowDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250729212927_AddIsCompletedToTask")]
+    partial class AddIsCompletedToTask
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -67,7 +67,9 @@ public static class TaskEndpoints
     {
       try
       {
-        var task = new TodoTask(request.Title);
+        var task = await todoTaskService.GetTaskById(id, cancellationToken);
+
+        task.IsCompleted = request.IsCompleted;
 
         var updatedTask = await todoTaskService.UpdateTask(id, task, cancellationToken);
 
