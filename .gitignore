@@ -418,11 +418,12 @@ obj/
 /coverage
 
 # next.js
-/.next/
-/out/
+/client/.next/
+/client/out/
 
 # production
-/build
+/server/build
+/client/build
 
 # misc
 .DS_Store
