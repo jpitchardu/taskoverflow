@@ -30,6 +30,29 @@
       "name": ".NET Core Attach",
       "type": "coreclr",
       "request": "attach"
+    },
+    {
+      "name": "🎯 Debug Current Test File (Manual Attach)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "dotnet",
+      "args": [
+        "test",
+        "--configuration",
+        "Debug",
+        "--filter",
+        "FullyQualifiedName~${fileBasenameNoExtension}",
+        "--no-restore",
+        "--no-build"
+      ],
+      "cwd": "${workspaceFolder}",
+      "console": "internalConsole",
+      "stopAtEntry": false,
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Testing",
+        "VSTEST_HOST_DEBUG": "1"
+      }
     }
   ]
 }

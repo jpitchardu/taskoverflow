@@ -1,3 +1,5 @@
+using TaskOverflow.Api.Endpoints;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -16,5 +18,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.MapTaskEndpoints();
+
 
 app.Run();
+
+public partial class Program { }
