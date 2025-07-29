@@ -28,21 +28,20 @@ public class TodoTaskRepositoryTests : IDisposable
   public async Task CreateTask_ShouldCreateTask()
   {
 
-    var task = new TodoTask("Test Task", "Test Description");
+    var task = new TodoTask("Test Task");
     await _repository.CreateTask(task);
 
     var createdTask = await _context.Tasks.FindAsync(task.Id);
 
     createdTask.Should().NotBeNull();
     createdTask.Title.Should().Be(task.Title);
-    createdTask.Description.Should().Be(task.Description);
   }
 
 
   [Fact]
   public async Task GetTaskById_ShouldGetTaskById()
   {
-    var taskToCreate = new TodoTask("Test Task", "Test Description");
+    var taskToCreate = new TodoTask("Test Task");
 
     _context.Tasks.Add(taskToCreate);
     await _context.SaveChangesAsync();
@@ -51,7 +50,6 @@ public class TodoTaskRepositoryTests : IDisposable
 
     createdTask.Should().NotBeNull();
     createdTask.Title.Should().Be(taskToCreate.Title);
-    createdTask.Description.Should().Be(taskToCreate.Description);
   }
 
   [Fact]
@@ -70,9 +68,9 @@ public class TodoTaskRepositoryTests : IDisposable
   {
     var tasksToCreate = new List<TodoTask>
     {
-      new TodoTask("Test Task 1", "Test Description 1"),
-      new TodoTask("Test Task 2", "Test Description 2"),
-      new TodoTask("Test Task 3", "Test Description 3"),
+      new TodoTask("Test Task 1"),
+      new TodoTask("Test Task 2"),
+      new TodoTask("Test Task 3"),
     };
 
     _context.Tasks.AddRange(tasksToCreate);
@@ -87,12 +85,12 @@ public class TodoTaskRepositoryTests : IDisposable
   [Fact]
   public async Task UpdateTask_ShouldUpdateTask()
   {
-    var taskToCreate = new TodoTask("Test Task", "Test Description");
+    var taskToCreate = new TodoTask("Test Task");
 
     _context.Tasks.Add(taskToCreate);
     await _context.SaveChangesAsync();
 
-    var updatedTask = new TodoTask("Updated Task", "Updated Description");
+    var updatedTask = new TodoTask("Updated Task");
 
     await _repository.UpdateTask(taskToCreate.Id, updatedTask);
 
@@ -100,7 +98,6 @@ public class TodoTaskRepositoryTests : IDisposable
 
     createdTask.Should().NotBeNull();
     createdTask.Title.Should().Be(updatedTask.Title);
-    createdTask.Description.Should().Be(updatedTask.Description);
   }
 
   [Fact]
@@ -108,7 +105,7 @@ public class TodoTaskRepositoryTests : IDisposable
   {
     var taskId = Guid.NewGuid();
 
-    var act = () => _repository.UpdateTask(taskId, new TodoTask("Test Task", "Test Description"));
+    var act = () => _repository.UpdateTask(taskId, new TodoTask("Test Task"));
 
     await act.Should().ThrowAsync<NotFoundException>().WithMessage("Not found");
   }
@@ -116,7 +113,7 @@ public class TodoTaskRepositoryTests : IDisposable
   [Fact]
   public async Task DeleteTask_ShouldDeleteTask()
   {
-    var taskToCreate = new TodoTask("Test Task", "Test Description");
+    var taskToCreate = new TodoTask("Test Task");
 
     _context.Tasks.Add(taskToCreate);
     await _context.SaveChangesAsync();

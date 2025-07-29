@@ -30,9 +30,9 @@ public class TodoTaskServiceTests
   {
     var tasks = new List<TodoTask>
     {
-      new TodoTask("Test Task 1", "Test Description 1"),
-      new TodoTask("Test Task 2", "Test Description 2"),
-      new TodoTask("Test Task 3", "Test Description 3"),
+      new TodoTask("Test Task 1"),
+      new TodoTask("Test Task 2"),
+      new TodoTask("Test Task 3"),
     };
 
     _repository.GetAllTasks().Returns(Task.FromResult(tasks.AsEnumerable()));
@@ -45,7 +45,7 @@ public class TodoTaskServiceTests
   [Fact]
   public async Task GetTaskById_ShouldReturnTask()
   {
-    var task = new TodoTask("Test Task", "Test Description");
+    var task = new TodoTask("Test Task");
 
     _repository.GetTaskById(task.Id).Returns(Task.FromResult(task));
 
@@ -69,7 +69,7 @@ public class TodoTaskServiceTests
   [Fact]
   public async Task CreateTask_ShouldCreateTask()
   {
-    var task = new TodoTask("Test Task", "Test Description");
+    var task = new TodoTask("Test Task");
 
     await _service.CreateTask(task);
 
@@ -80,7 +80,7 @@ public class TodoTaskServiceTests
   [Fact]
   public async Task UpdateTask_ShouldUpdateTask()
   {
-    var task = new TodoTask("Test Task", "Test Description");
+    var task = new TodoTask("Test Task");
 
     await _service.UpdateTask(task.Id, task);
 
@@ -94,7 +94,7 @@ public class TodoTaskServiceTests
 
     _repository.UpdateTask(taskId, Arg.Any<TodoTask>()).Throws(new NotFoundException());
 
-    var act = () => _service.UpdateTask(taskId, new TodoTask("Test Task", "Test Description"));
+    var act = () => _service.UpdateTask(taskId, new TodoTask("Test Task"));
 
     await act.Should().ThrowAsync<NotFoundException>().WithMessage("Not found");
   }

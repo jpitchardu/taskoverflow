@@ -11,7 +11,6 @@ public class TaskOverflowDbContext(DbContextOptions<TaskOverflowDbContext> optio
   {
     modelBuilder.Entity<TodoTask>().HasKey(t => t.Id);
     modelBuilder.Entity<TodoTask>().Property(t => t.Title).IsRequired();
-    modelBuilder.Entity<TodoTask>().Property(t => t.Description).IsRequired();
 
     modelBuilder.Entity<TodoTask>().HasIndex(t => t.UpdatedAt);
 

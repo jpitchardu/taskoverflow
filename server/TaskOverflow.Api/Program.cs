@@ -36,11 +36,31 @@ builder.Services.AddDbContext<TaskOverflowDbContext>(options =>
 builder.Services.AddScoped<ITodoTaskRepository, TodoTaskRepository>();
 builder.Services.AddScoped<ITodoTaskService, TodoTaskService>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policyBuilder =>
+        {
+            policyBuilder.AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
+
 var app = builder.Build();
 
-app.UseHttpsRedirection();
+if (app.Environment.IsDevelopment())
+{
+    using var scope = app.Services.CreateScope();
+    var dbContext = scope.ServiceProvider.GetRequiredService<TaskOverflowDbContext>();
+    dbContext.Database.Migrate();
+}
+
+;
+
+app.UseCors();
 
 app.MapTaskEndpoints();
+app.MapHealthEndpoint();
 
 app.Run();
 

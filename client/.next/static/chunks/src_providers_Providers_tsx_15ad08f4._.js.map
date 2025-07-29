@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file:///home/jpichardo/development/study/taskoverflow/client/src/providers/Providers.tsx"],"sourcesContent":["\"use client\";\n\nimport { QueryClient, QueryClientProvider } from \"@tanstack/react-query\";\n\nconst queryClient = new QueryClient();\n\nexport function Providers({ children }: { children: React.ReactNode }) {\n  return (\n    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>\n  );\n}\n"],"names":[],"mappings":";;;;AAEA;AAAA;AAFA;;;AAIA,MAAM,cAAc,IAAI,yPAAA,CAAA,cAAW;AAE5B,SAAS,UAAU,KAA2C;QAA3C,EAAE,QAAQ,EAAiC,GAA3C;IACxB,qBACE,4TAAC,yRAAA,CAAA,sBAAmB;QAAC,QAAQ;kBAAc;;;;;;AAE/C;KAJgB","debugId":null}}]
+}

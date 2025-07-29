@@ -89,7 +89,7 @@ public class TaskEndpointsTests : IClassFixture<WebApplicationFactory<Program>>
   [Fact]
   public async Task CreateTask_ReturnsCreatedResult()
   {
-    var createRequest = new CreateTaskRequest("Task 1", "Description 1");
+    var createRequest = new CreateTaskRequest("Task 1");
 
     var json = JsonSerializer.Serialize(createRequest, _jsonOptions);
     Console.WriteLine($"Sending JSON: {json}");
@@ -113,14 +113,13 @@ public class TaskEndpointsTests : IClassFixture<WebApplicationFactory<Program>>
 
     result.Should().NotBeNull();
     result.Task.Title.Should().Be(createRequest.Title);
-    result.Task.Description.Should().Be(createRequest.Description);
   }
 
   [Fact]
   public async Task UpdateTask_ReturnsOkResult()
   {
     // First create a task
-    var createRequest = new CreateTaskRequest("Task 1", "Description 1");
+    var createRequest = new CreateTaskRequest("Task 1");
     var json = JsonSerializer.Serialize(createRequest, _jsonOptions);
     var content = new StringContent(json, Encoding.UTF8, "application/json");
 
@@ -135,7 +134,7 @@ public class TaskEndpointsTests : IClassFixture<WebApplicationFactory<Program>>
     Console.WriteLine($"Created task: {createResult.Task.Id}");
 
     // Now update it
-    var updateRequest = new UpdateTaskRequest("Task 2", "Description 2");
+    var updateRequest = new UpdateTaskRequest("Task 2");
     var updateJson = JsonSerializer.Serialize(updateRequest, _jsonOptions);
     Console.WriteLine($"Update JSON: {updateJson}");
 
@@ -158,14 +157,13 @@ public class TaskEndpointsTests : IClassFixture<WebApplicationFactory<Program>>
 
     updateResult.Should().NotBeNull();
     updateResult.Task.Title.Should().Be(updateRequest.Title);
-    updateResult.Task.Description.Should().Be(updateRequest.Description);
   }
 
   [Fact]
   public async Task DeleteTask_ReturnsNoContentResult()
   {
     // First create a task
-    var createRequest = new CreateTaskRequest("Task 1", "Description 1");
+    var createRequest = new CreateTaskRequest("Task 1");
     var json = JsonSerializer.Serialize(createRequest, _jsonOptions);
     var content = new StringContent(json, Encoding.UTF8, "application/json");
 

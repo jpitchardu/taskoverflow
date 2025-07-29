@@ -48,7 +48,7 @@ public static class TaskEndpoints
     {
       try
       {
-        var task = new TodoTask(request.Title, request.Description);
+        var task = new TodoTask(request.Title);
 
         var createdTask = await todoTaskService.CreateTask(task, cancellationToken);
 
@@ -67,7 +67,7 @@ public static class TaskEndpoints
     {
       try
       {
-        var task = new TodoTask(request.Title, request.Description);
+        var task = new TodoTask(request.Title);
 
         var updatedTask = await todoTaskService.UpdateTask(id, task, cancellationToken);
 
@@ -103,4 +103,4 @@ public static class TaskEndpoints
       }
     });
   }
-} 
+}

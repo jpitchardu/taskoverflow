@@ -9,6 +9,11 @@ services:
       POSTGRES_DB: taskoverflow_dashboard
     ports:
       - 5432:5432
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U taskoverflow_user -d taskoverflow_dashboard"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
@@ -20,26 +25,15 @@ services:
       dockerfile:  server/Dockerfile
     container_name: taskoverflow_api
     ports:
-      - 3000:8080
+      - 5000:8080
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     networks:
       - taskoverflow-network
     volumes:
       - .:/app/source
 
-  pgadmin:
-    image: dpage/pgadmin4:latest
-    container_name: taskoverflow_pgadmin
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@taskoverflow.com
-      PGADMIN_DEFAULT_PASSWORD: admin123
-    ports:
-      - 8080:80
-    depends_on:
-      - postgres
-    networks:
-      - taskoverflow-network
 
 volumes:
   postgres_data:
