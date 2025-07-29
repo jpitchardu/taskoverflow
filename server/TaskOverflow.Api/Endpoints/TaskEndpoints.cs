@@ -1,5 +1,7 @@
 using TaskOverflow.Api.DTOs;
+using TaskOverflow.Api.Exceptions;
 using TaskOverflow.Api.Models;
+using TaskOverflow.Api.Services;
 
 namespace TaskOverflow.Api.Endpoints;
 
@@ -8,32 +10,97 @@ public static class TaskEndpoints
 {
   public static void MapTaskEndpoints(this IEndpointRouteBuilder app)
   {
-    app.MapGet("/task", () =>
+    app.MapGet("/task", async (ITodoTaskService todoTaskService, CancellationToken cancellationToken) =>
     {
-      return Results.Ok(new GetTasksResponse([new TodoTask("Task 1", "Description 1")]));
+      try
+      {
+        var tasks = await todoTaskService.GetAllTasks(cancellationToken);
+
+        return Results.Ok(new GetTasksResponse([.. tasks]));
+      }
+      catch (Exception ex)
+      {
+        return Results.Problem(ex.Message);
+      }
     });
 
-    app.MapPost("/task", (CreateTaskRequest request) =>
+    app.MapGet("/task/{id}", async (Guid id, ITodoTaskService todoTaskService, CancellationToken cancellationToken) =>
     {
+      try
+      {
+        var task = await todoTaskService.GetTaskById(id, cancellationToken);
 
-      var task = new TodoTask(request.Title, request.Description);
+        return Results.Ok(new GetTaskResponse(task));
+      }
+      catch (Exception ex)
+      {
 
-      return Results.Created(
-        $"/task/{task.Id}",
-        new CreateTaskResponse(task)
-      );
+        if (ex is NotFoundException)
+        {
+          return Results.NotFound(ex.Message);
+        }
+
+        return Results.Problem(ex.Message);
+      }
     });
 
-    app.MapPatch("/task/{id}", (Guid id, UpdateTaskRequest request) =>
+    app.MapPost("/task", async (CreateTaskRequest request, ITodoTaskService todoTaskService, CancellationToken cancellationToken) =>
     {
-      var task = new TodoTask(request.Title, request.Description);
+      try
+      {
+        var task = new TodoTask(request.Title, request.Description);
 
-      return Results.Ok(new UpdateTaskResponse(task));
+        var createdTask = await todoTaskService.CreateTask(task, cancellationToken);
+
+        return Results.Created(
+          $"/task/{createdTask.Id}",
+          new CreateTaskResponse(createdTask)
+        );
+      }
+      catch (Exception ex)
+      {
+        return Results.Problem(ex.Message);
+      }
     });
 
-    app.MapDelete("/task/{id}", (Guid id) =>
+    app.MapPatch("/task/{id}", async (Guid id, UpdateTaskRequest request, ITodoTaskService todoTaskService, CancellationToken cancellationToken) =>
     {
-      return Results.NoContent();
+      try
+      {
+        var task = new TodoTask(request.Title, request.Description);
+
+        var updatedTask = await todoTaskService.UpdateTask(id, task, cancellationToken);
+
+        return Results.Ok(new UpdateTaskResponse(updatedTask));
+      }
+      catch (Exception ex)
+      {
+        if (ex is NotFoundException)
+        {
+          return Results.NotFound(ex.Message);
+        }
+
+        return Results.Problem(ex.Message);
+      }
+    });
+
+    app.MapDelete("/task/{id}", async (Guid id, ITodoTaskService todoTaskService, CancellationToken cancellationToken) =>
+    {
+      try
+      {
+        await todoTaskService.DeleteTask(id, cancellationToken);
+
+        return Results.NoContent();
+      }
+      catch (Exception ex)
+      {
+        if (ex is NotFoundException)
+        {
+          return Results.NotFound(ex.Message);
+        }
+
+        return Results.Problem(ex.Message);
+      }
     });
   }
-}
+} 

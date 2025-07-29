@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "ZX2QYsaCtgU=",
+  "dgSpecHash": "WA1zCuayN38=",
   "success": true,
   "projectFilePath": "/home/jpichardo/development/study/taskoverflow/server/TaskOverflow.Api/TaskOverflow.Api.csproj",
   "expectedPackageFiles": [
@@ -19,6 +19,7 @@
     "/home/jpichardo/.nuget/packages/microsoft.entityframeworkcore.abstractions/9.0.7/microsoft.entityframeworkcore.abstractions.9.0.7.nupkg.sha512",
     "/home/jpichardo/.nuget/packages/microsoft.entityframeworkcore.analyzers/9.0.7/microsoft.entityframeworkcore.analyzers.9.0.7.nupkg.sha512",
     "/home/jpichardo/.nuget/packages/microsoft.entityframeworkcore.design/9.0.7/microsoft.entityframeworkcore.design.9.0.7.nupkg.sha512",
+    "/home/jpichardo/.nuget/packages/microsoft.entityframeworkcore.inmemory/9.0.7/microsoft.entityframeworkcore.inmemory.9.0.7.nupkg.sha512",
     "/home/jpichardo/.nuget/packages/microsoft.entityframeworkcore.relational/9.0.7/microsoft.entityframeworkcore.relational.9.0.7.nupkg.sha512",
     "/home/jpichardo/.nuget/packages/microsoft.extensions.apidescription.server/6.0.5/microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
     "/home/jpichardo/.nuget/packages/microsoft.extensions.caching.abstractions/9.0.7/microsoft.extensions.caching.abstractions.9.0.7.nupkg.sha512",

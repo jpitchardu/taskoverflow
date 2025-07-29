@@ -2895,6 +2895,7 @@
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
           "Microsoft.AspNetCore.OpenApi": "8.0.18",
+          "Microsoft.EntityFrameworkCore.InMemory": "9.0.7",
           "Npgsql.EntityFrameworkCore.PostgreSQL": "9.0.4",
           "Serilog.AspNetCore": "9.0.0",
           "Swashbuckle.AspNetCore": "6.6.2"
