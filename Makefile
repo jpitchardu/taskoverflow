@@ -11,5 +11,9 @@ reset:
 test-server:
 	cd server && ASPNETCORE_ENVIRONMENT=Testing dotnet test
 
+test-client:
+	cd client && pnpm test
 
-.PHONY: start stop  reset test-server
+test: test-server test-client
+
+.PHONY: start stop  reset test-server test-client test

@@ -6,6 +6,8 @@ Running `make start`should get everything going and the client should be accessi
 
 If you run into any errors during build or rebuild `make reset` should clear out all the previous containers and get it going again.
 
+`make test` to run both server and client tests.
+
 **Disclaimer: The db is not persistent through restarts**
 
 ## Cases Covered
@@ -37,8 +39,8 @@ If you run into any errors during build or rebuild `make reset` should clear out
 **The title was set as 20 chars length maximum to be able to showcase validation easily**
 
 ## Tech Stack
-**Backend:** ASP.Net Core, PostgreSQL, Entity Framework Core  
-**Frontend:** Next.js, TypeScript, React Query, shadcn/ui  
+**Backend:** ASP.Net Core, PostgreSQL, Entity Framework Core, xUnit  
+**Frontend:** Next.js, TypeScript, React Query, shadcn/ui, vitest  
 **Infrastructure:** Docker Compose
 
 ## API Endpoints
@@ -46,3 +48,12 @@ If you run into any errors during build or rebuild `make reset` should clear out
 - `POST /api/tasks` - Create task (validates title required, max 20 chars)
 - `PATCH /api/tasks/{id}` - Toggle completion status
 - `DELETE /api/tasks/{id}` - Delete task
+
+## If this was going to production
+
+- Redis caching for session data
+- Persistent postgresql cluster with a read_only instance and regular backups
+- A migration infrastructure for EF -> DB
+- Authentication
+- Tags for tasks and filtering
+- Rate limiting.
