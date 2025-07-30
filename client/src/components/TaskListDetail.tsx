@@ -31,11 +31,19 @@ export function TaskListDetail({
     <div className="flex flex-row gap-2 p-4 border-b border-gray-200 w-full items-center justify-between">
       <h2 className={cn("text-lg", isCompleted && "line-through")}>{title}</h2>
       <div className="flex flex-row gap-2">
-        <Button variant="destructive" onClick={handleDeleteTask}>
+        <Button
+          variant="destructive"
+          onClick={handleDeleteTask}
+          aria-label="Delete Task"
+        >
           ☠️
         </Button>
         {!isCompleted && (
-          <Button variant="secondary" onClick={handleCompleteTask}>
+          <Button
+            variant="secondary"
+            onClick={handleCompleteTask}
+            aria-label="Complete Task"
+          >
             ✔️
           </Button>
         )}

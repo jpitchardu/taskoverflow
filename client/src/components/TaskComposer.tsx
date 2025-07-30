@@ -41,6 +41,7 @@ export function TaskComposer() {
           value={title}
           onChange={onChange}
           onFocus={onFocus}
+          placeholder="Add a task"
           className={cn(
             "flex-grow-1",
             "bg-background",
