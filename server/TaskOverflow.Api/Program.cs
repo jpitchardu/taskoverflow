@@ -11,9 +11,7 @@ builder.Services.AddDbContext<TaskOverflowDbContext>(options =>
 
 {
 
-    var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
-
-    if (env == "Testing")
+    if (builder.Environment.IsEnvironment("Testing"))
     {
         options.UseInMemoryDatabase("TaskOverflowDb");
         options.EnableSensitiveDataLogging();
@@ -21,7 +19,7 @@ builder.Services.AddDbContext<TaskOverflowDbContext>(options =>
         return;
     }
 
-    if (env == "Development")
+    if (builder.Environment.IsEnvironment("Development"))
     {
         options.EnableSensitiveDataLogging();
         options.EnableDetailedErrors();
