@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 
 namespace TaskOverflow.Api.Tests.Endpoints;
 
@@ -89,7 +90,7 @@ public class TaskEndpointsTests : IClassFixture<WebApplicationFactory<Program>>
   [Fact]
   public async Task CreateTask_ReturnsCreatedResult()
   {
-    var createRequest = new CreateTaskRequest("Task 1");
+    var createRequest = new CreateTaskRequest { Title = "Task 1" };
 
     var json = JsonSerializer.Serialize(createRequest, _jsonOptions);
     Console.WriteLine($"Sending JSON: {json}");
@@ -115,11 +116,36 @@ public class TaskEndpointsTests : IClassFixture<WebApplicationFactory<Program>>
     result.Task.Title.Should().Be(createRequest.Title);
   }
 
+  [Theory]
+  [InlineData("Task 1", HttpStatusCode.Created)]
+  [InlineData("", HttpStatusCode.BadRequest)]
+  [InlineData(null, HttpStatusCode.BadRequest)]
+  [InlineData("Task 12345678901234567890123456789012345678901234567890123456789012345678901234567890", HttpStatusCode.BadRequest)]
+  public async Task CreateTask_ReturnsExpectedResult(string title, HttpStatusCode expectedStatusCode)
+  {
+    var createRequest = new CreateTaskRequest { Title = title };
+    var json = JsonSerializer.Serialize(createRequest, _jsonOptions);
+    var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+    var response = await _client.PostAsync("/task", content);
+
+    response.StatusCode.Should().Be(expectedStatusCode);
+
+    if (expectedStatusCode == HttpStatusCode.BadRequest)
+    {
+      var errorResponse = await response.Content.ReadAsStringAsync();
+      var errorResult = JsonSerializer.Deserialize<ValidationProblemDetails>(errorResponse, _jsonOptions);
+      errorResult.Should().NotBeNull();
+      errorResult.Errors.Should().NotBeNull();
+      errorResult.Errors.Should().ContainKey("Title");
+    }
+  }
+
   [Fact]
   public async Task UpdateTask_ReturnsOkResult()
   {
     // First create a task
-    var createRequest = new CreateTaskRequest("Task 1");
+    var createRequest = new CreateTaskRequest { Title = "Task 1" };
     var json = JsonSerializer.Serialize(createRequest, _jsonOptions);
     var content = new StringContent(json, Encoding.UTF8, "application/json");
 
@@ -163,7 +189,7 @@ public class TaskEndpointsTests : IClassFixture<WebApplicationFactory<Program>>
   public async Task DeleteTask_ReturnsNoContentResult()
   {
     // First create a task
-    var createRequest = new CreateTaskRequest("Task 1");
+    var createRequest = new CreateTaskRequest { Title = "Task 1" };
     var json = JsonSerializer.Serialize(createRequest, _jsonOptions);
     var content = new StringContent(json, Encoding.UTF8, "application/json");
 

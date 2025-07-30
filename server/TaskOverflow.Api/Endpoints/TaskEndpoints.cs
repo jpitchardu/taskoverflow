@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Mvc;
 using TaskOverflow.Api.DTOs;
 using TaskOverflow.Api.Exceptions;
+using TaskOverflow.Api.Extensions;
 using TaskOverflow.Api.Models;
 using TaskOverflow.Api.Services;
 
@@ -61,7 +63,10 @@ public static class TaskEndpoints
       {
         return Results.Problem(ex.Message);
       }
-    });
+    })
+    .WithValidation<CreateTaskRequest>()
+    .Produces<CreateTaskResponse>(StatusCodes.Status201Created)
+    .Produces<ValidationProblemDetails>(StatusCodes.Status400BadRequest);
 
     app.MapPatch("/task/{id}", async (Guid id, UpdateTaskRequest request, ITodoTaskService todoTaskService, CancellationToken cancellationToken) =>
     {

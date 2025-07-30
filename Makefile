@@ -8,5 +8,8 @@ stop:
 reset:
 	docker-compose down -v && docker-compose up --build
 
+test-server:
+	cd server && ASPNETCORE_ENVIRONMENT=Testing dotnet test
 
-.PHONY: start stop  
+
+.PHONY: start stop  reset test-server

@@ -12,10 +12,12 @@ export function TaskComposer() {
 
   const [title, setTitle] = useState<string>();
   const [isValid, setIsValid] = useState<boolean>();
+  const [error, setError] = useState<string>();
 
   const onChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
     setIsValid(e.target.validity.valid);
+    setError(e.target.validationMessage);
   }, []);
 
   const onFocus = useCallback((e: React.FocusEvent<HTMLInputElement>) => {
@@ -29,23 +31,31 @@ export function TaskComposer() {
     setTitle("");
   }, [createTask, title]);
 
+  // To ensure it is disabled  after re-rendering
+  const canSubmit = isValid && title?.length && title.length > 0 && !isPending;
+
   return (
-    <div className="flex flex-row gap-2 p-4 border-b border-gray-200 w-full items-center justify-center">
-      <Input
-        value={title}
-        onChange={onChange}
-        onFocus={onFocus}
-        className={cn(
-          "flex-grow-1",
-          "bg-background",
-          isValid === false && "border-destructive",
-          isValid === true && "border-primary"
-        )}
-        minLength={1}
-        maxLength={100}
-        required
-      />
-      <Button onClick={onClick} disabled={!isValid || isPending}>
+    <div className="flex flex-row gap-2 p-4 border-b border-gray-200 w-full items-start justify-center">
+      <div className="flex flex-col gap-2">
+        <Input
+          value={title}
+          onChange={onChange}
+          onFocus={onFocus}
+          className={cn(
+            "flex-grow-1",
+            "bg-background",
+            isValid === false && "border-destructive",
+            isValid === true && "border-primary"
+          )}
+          minLength={1}
+          maxLength={20}
+          required
+        />
+        {!isValid && error ? (
+          <p className=" text-xs text-destructive">{error}</p>
+        ) : null}
+      </div>
+      <Button onClick={onClick} disabled={!canSubmit}>
         {isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
         Create
       </Button>
