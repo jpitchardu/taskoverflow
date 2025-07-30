@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-const API_URL = "http://192.168.1.92:5000";
+const API_URL = "/api";
 
 type Task = {
   id: string;
@@ -25,6 +25,7 @@ export function useTasks() {
     queryFn: async () => {
       const response = await fetch(`${API_URL}/task`);
       const data = await response.json();
+
       return data.tasks as Task[];
     },
   });

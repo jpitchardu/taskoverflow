@@ -29,10 +29,33 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/health || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     networks:
       - taskoverflow-network
     volumes:
       - .:/app/source
+
+
+  client:
+    build:
+      context: .
+      dockerfile: client/Dockerfile
+    container_name: taskoverflow_client
+    depends_on:
+      api:
+        condition: service_healthy
+    environment:
+      - NEXT_PUBLIC_API_URL=http://api
+    ports:
+      - 3000:8080 
+    volumes:
+      - ./client:/app
+    networks:
+      - taskoverflow-network
 
 
 volumes:

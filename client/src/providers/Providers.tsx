@@ -1,14 +1,18 @@
 "use client";
 
-import { ErrorBoundary } from "@/providers/ErrorBoundary";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      throwOnError: true,
+    },
+  },
+});
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <ErrorBoundary>
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-    </ErrorBoundary>
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
 }
